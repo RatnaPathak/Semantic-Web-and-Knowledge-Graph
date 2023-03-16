@@ -1,0 +1,650 @@
+@prefix : <http://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti/> .
+@prefix ra: <http://www.example.org/ra#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti> .
+
+<ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti> rdf:type owl:Ontology ;
+                                                         rdfs:comment """This is a group coursework 'Ontology Modelling ' for module : 
+Semantic Web Technologies and Knowledge Graphs.
+
+by : Ratna Pathak and Aarti Suryawanshi.
+Academic year: 2022-2023.
+
+Involves the creation of an ontology that covers the knowledge of a given domain:
+Pizza.
+Dataset for the coursework :Pizza Restaurants and the Pizza They Sell(cw_data)"""@en .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://www.example.org/ra#creator
+ra:creator rdf:type owl:AnnotationProperty ;
+           ra:creator "Ratna and Aarti" .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#ServedIn
+:ServedIn rdf:type owl:ObjectProperty ;
+          owl:inverseOf :servesPizza ;
+          rdfs:domain ra:Pizza ;
+          rdfs:range :Restaurant .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#hasBase
+:hasBase rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf :hasIngredient ;
+         owl:inverseOf :isBaseOf ;
+         rdf:type owl:FunctionalProperty ;
+         rdfs:domain ra:Pizza ;
+         rdfs:range :PizzaBase .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#hasIngredient
+:hasIngredient rdf:type owl:ObjectProperty ;
+               owl:inverseOf :isIngredientOf ;
+               rdf:type owl:TransitiveProperty ;
+               rdfs:domain ra:Pizza ;
+               rdfs:range :Ingredients .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#hasRestaurant
+:hasRestaurant rdf:type owl:ObjectProperty ;
+               rdfs:domain ra:Pizza ;
+               rdfs:range :Restaurant .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#hasSauce
+:hasSauce rdf:type owl:ObjectProperty ;
+          rdfs:domain ra:Pizza ;
+          rdfs:range :PizzaSauce .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#hasSize
+:hasSize rdf:type owl:ObjectProperty ,
+                  owl:FunctionalProperty ;
+         rdfs:domain ra:Pizza ;
+         rdfs:range :PizzaSizes .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#hasTopping
+:hasTopping rdf:type owl:ObjectProperty ;
+            rdfs:subPropertyOf :hasIngredient ;
+            owl:inverseOf :isToppingOf ;
+            rdfs:domain ra:Pizza ;
+            rdfs:range :PizzaTopping .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#isBaseOf
+:isBaseOf rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf :isIngredientOf ;
+          rdfs:domain :PizzaBase ;
+          rdfs:range ra:Pizza .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#isIngredientOf
+:isIngredientOf rdf:type owl:ObjectProperty .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#isLocatedIn
+:isLocatedIn rdf:type owl:ObjectProperty ;
+             rdfs:domain :Restaurant ;
+             rdfs:range :City .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#isToppingOf
+:isToppingOf rdf:type owl:ObjectProperty ;
+             rdfs:subPropertyOf :isIngredientOf ;
+             rdfs:domain :PizzaTopping ;
+             rdfs:range :NamedPizza .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#servesPizza
+:servesPizza rdf:type owl:ObjectProperty ;
+             rdfs:domain :Restaurant ;
+             rdfs:range ra:Pizza .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.example.org/ra#Pizza
+ra:Pizza rdf:type owl:Class ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :ServedIn ;
+                           owl:someValuesFrom :Restaurant
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasBase ;
+                           owl:someValuesFrom :PizzaBase
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasTopping ;
+                           owl:someValuesFrom :PizzaTopping
+                         ] ;
+         owl:disjointWith :City ;
+         rdfs:comment "Pizza is a savory dish that typically consists of a round, flattened base of dough topped with tomato sauce, cheese, and various other toppings, such as vegetables, meats, and herbs. The dough is usually made from wheat flour, yeast, and water, and can be baked in an oven or on a grill. Pizza originated in Italy but has since become popular worldwide, with many variations and styles available depending on regional and cultural preferences. Pizza is often enjoyed as a fast food or as a meal shared among friends and family."@en ;
+         rdfs:label "Pizza" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#BBQSauce
+:BBQSauce rdf:type owl:Class ;
+          rdfs:subClassOf :PizzaSauce ;
+          rdfs:comment "BBQ sauce is a type of sauce that is typically made with a tomato or vinegar base, mixed with various spices and flavorings, and can also contain molasses or brown sugar to give it a sweet taste. When used as a pizza topping, BBQ sauce can add a smoky, tangy, and slightly sweet flavor to the pizza."@en ;
+          rdfs:label "BBQ Sauce"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Baltimore
+:Baltimore rdf:type owl:Class ;
+           rdfs:subClassOf :City ;
+           rdfs:comment "Represents a geographic location in Maryland, United States, where pizza can be ordered or consumed." .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Basil
+:Basil rdf:type owl:Class ;
+       rdfs:subClassOf :Herbs ;
+       rdfs:comment "Basil is a fragrant herb that is commonly used in Italian cuisine and has a slightly sweet and spicy flavor profile. It is often used fresh, and its leaves are typically chopped or torn before being added to a pizza."@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#BeefTopping
+:BeefTopping rdf:type owl:Class ;
+             rdfs:subClassOf :MeatTopping ;
+             rdfs:comment "Beef topping for pizza refers to a type of pizza topping that consists of cooked, seasoned beef that is spread on top of the pizza crust along with other toppings such as cheese, vegetables, and sauce."@en ;
+             rdfs:label "Beef Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#CheddarTopping
+:CheddarTopping rdf:type owl:Class ;
+                rdfs:subClassOf :CheeseTopping ;
+                rdfs:comment "Cheddar topping in pizza refers to the representation of cheddar cheese as a type of topping that can be added to a pizza. Cheddar cheese is a semi-hard, yellow or white cheese that is made from cow's milk and has a distinct sharp, tangy flavor."@en ;
+                rdfs:label "Cheddar Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#CheeseTopping
+:CheeseTopping rdf:type owl:Class ;
+               rdfs:subClassOf :PizzaTopping ;
+               rdfs:comment """A type of pizza topping that consists of cheese, such as:
+mozzarella, cheddar,provolone, ricotta or parmesan""" ;
+               rdfs:label "Cheese Topping" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#ChickenTopping
+:ChickenTopping rdf:type owl:Class ;
+                rdfs:subClassOf :MeatTopping ;
+                rdfs:comment "Chicken topping for pizza refers to a type of topping commonly used in pizza preparation, which consists of cooked and diced chicken meat. Chicken topping is a popular choice for pizza lovers looking for a protein-rich and flavorful option."@en ;
+                rdfs:label "Chicken Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#City
+:City rdf:type owl:Class ;
+      rdfs:comment """This class represents a city where a pizza restaurant is located. The city may have one or more pizza restaurants that serve different types of pizzas.
+
+Properties:
+\"isLocatedIn\" : This object property relates a pizza restaurant  to a city where it is located.
+\"hasRestaurant\" : This object property relates a city to a pizza restaurant located in that city."""@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#FruitTopping
+:FruitTopping rdf:type owl:Class ;
+              rdfs:subClassOf :PizzaTopping ;
+              rdfs:comment "A type of pizza topping that consists of fruit, such as pineapple." ;
+              rdfs:label "Fruit Topping" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#GreenPepperTopping
+:GreenPepperTopping rdf:type owl:Class ;
+                    rdfs:subClassOf :PepperTopping ;
+                    rdfs:comment "Green peppers, also known as bell peppers, are a popular vegetable used in many pizza due to their mild, sweet flavor and crisp texture. They are often used as a topping for pizza to add flavor, crunch, and nutritional value."@en ;
+                    rdfs:label "Green Pepper Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#HamTopping
+:HamTopping rdf:type owl:Class ;
+            rdfs:subClassOf :MeatTopping ;
+            rdfs:comment "Ham topping is a popular choice for pizza and refers to thin slices or chunks of cooked pork that are typically added on top of the pizza sauce and under the cheese.Ham topping is a versatile and flavorful option for pizza that can appeal to a wide range of tastes."@en ;
+            rdfs:label "Ham Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#HawaiinPizza
+:HawaiinPizza rdf:type owl:Class ;
+              rdfs:subClassOf :NamedPizza ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasSauce ;
+                                owl:someValuesFrom :WhiteSauce
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasTopping ;
+                                owl:someValuesFrom :HamTopping
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasTopping ;
+                                owl:someValuesFrom :Pineapple
+                              ] ;
+              rdfs:comment "Typically made with the topping of Ham and Pineapple" ;
+              rdfs:label "Hawaiin Pizza" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Herbs
+:Herbs rdf:type owl:Class ;
+       rdfs:subClassOf :PizzaTopping ;
+       rdfs:comment "Herbs can add a variety of flavors and aromas to a pizza, and can range from common options such as basil and oregano, to more unique options like rosemary or thyme."@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Ingredients
+:Ingredients rdf:type owl:Class ;
+             rdfs:comment "Food Substance use to make the recipe." .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Large
+:Large rdf:type owl:Class ;
+       rdfs:subClassOf :PizzaSizes ;
+       rdfs:comment "Large pizza size refers to the representation of a pizza that is larger in diameter and typically has more slices than a medium or small pizza. The exact dimensions of a large pizza may vary depending on the pizzeria or region, but it is generally understood to be at least 14 inches in diameter and may come with anywhere from 8 to 12 slices." .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Littleton
+:Littleton rdf:type owl:Class ;
+           rdfs:subClassOf :City ;
+           rdfs:comment "Littleton City is a suburb of Denver located in the state of Colorado, USA."@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Mango
+:Mango rdf:type owl:Class ;
+       rdfs:subClassOf :FruitTopping ;
+       rdfs:comment "Mango is a tropical fruit that is known for its sweet, juicy flavor and vibrant color. While not a traditional pizza topping, mango can provide a unique and refreshing twist to a pizza, particularly when paired with savory or spicy flavors such as cheese or chili flakes."@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#MangoTangoBeachPiePizza
+:MangoTangoBeachPiePizza rdf:type owl:Class ;
+                         rdfs:subClassOf :NamedPizza ,
+                                         [ rdf:type owl:Restriction ;
+                                           owl:onProperty :hasTopping ;
+                                           owl:someValuesFrom :Mango
+                                         ] ,
+                                         [ rdf:type owl:Restriction ;
+                                           owl:onProperty :ServedIn ;
+                                           owl:allValuesFrom <ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Aarti&RatnaPizzeria>
+                                         ] ;
+                         rdfs:comment """It must have Mango &  as its topping.
+This is a Vegetarian Pizza but not Vegan, which has fruity flavor profile due to the mango topping. 
+This is unique pizza and may not be available at all pizzerias , as it is a speciality pizzawith an uncommon combination of ingredients.
+Mongo gives this pizza a tropical feel, people who enjoy beach inspired cusine or tropical flavours will love it."""@en ;
+                         rdfs:label "Mango Tango Beach Pie Pizza" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#MargheritaPizza
+:MargheritaPizza rdf:type owl:Class ;
+                 rdfs:subClassOf :NamedPizza ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasBase ;
+                                   owl:allValuesFrom :ThinCrust
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasSauce ;
+                                   owl:allValuesFrom :TomatoSauce
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasTopping ;
+                                   owl:allValuesFrom :Basil
+                                 ] ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty :hasTopping ;
+                                   owl:allValuesFrom :MozzarellaTopping
+                                 ] ;
+                 rdfs:comment "This Pizza must have Mozarella, Basil and Tomato toppings"@en ;
+                 rdfs:label "Margherita Pizza" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#MeatTopping
+:MeatTopping rdf:type owl:Class ;
+             rdfs:subClassOf :PizzaTopping ;
+             rdfs:comment """A type of pizza topping that consists of meat, such as :
+pepperoni, ham, beef, chicken or salami.""" ;
+             rdfs:label "Meat Topping" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Medium
+:Medium rdf:type owl:Class ;
+        rdfs:subClassOf :PizzaSizes ;
+        rdfs:comment "Medium pizza size refers to the representation of a specific size of pizza. Generally, a medium pizza is smaller than a large pizza but larger than a small pizza, and typically has a diameter of around 12 to 14 inches (30 to 36 cm). It is a common size option for pizza orders and is often suitable for individuals or small groups." .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Miami
+:Miami rdf:type owl:Class ;
+       rdfs:subClassOf :City ;
+       rdfs:comment "Miami City is a major metropolitan area located in the southeastern region of Florida, USA."@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#MiamiSteakhousePizza
+:MiamiSteakhousePizza rdf:type owl:Class ;
+                      rdfs:subClassOf :NamedPizza ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty :hasSauce ;
+                                        owl:someValuesFrom :BBQSauce
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty :hasTopping ;
+                                        owl:someValuesFrom :BeefTopping
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty :hasTopping ;
+                                        owl:someValuesFrom :ParmesanTopping
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty :ServedIn ;
+                                        owl:allValuesFrom <ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Aarti&RatnaPizzeria>
+                                      ] ;
+                      rdfs:comment """It is a non vegetarian pizza.
+This pizza must contain the BBQ sauce,beef,parmesan cheese and wheat crust.  
+This pizza has a savory flavor profile due to the beef and parmesan cheese.
+This BBQ sauce makes this pizza more spicier than the others.
+
+Alergy Alert:- Beef, Cheese, Wheat Crust.""" ;
+                      rdfs:label "Miami Steakhouse Pizza" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#MozzarellaTopping
+:MozzarellaTopping rdf:type owl:Class ;
+                   rdfs:subClassOf :CheeseTopping ;
+                   rdfs:comment "Mozzarella topping in pizza refers to the representation of mozzarella cheese as a type of topping that can be added to a pizza. Mozzarella cheese is a semi-soft, stretchy cheese that is made from the milk of water buffalo or cows. It is a popular choice for pizza toppings due to its mild flavor and ability to melt well when heated. Mozzarella cheese can be used on its own as a topping, or combined with other toppings such as tomato sauce, basil, or pepperoni to create a classic pizza."@en ;
+                   rdfs:label "Mozzarella Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#MushroomTopping
+:MushroomTopping rdf:type owl:Class ;
+                 rdfs:subClassOf :VegetableTopping ;
+                 rdfs:comment "Mushrooms are a type of edible fungi that come in a variety of shapes and sizes, and are often favored for their rich, earthy flavor and meaty texture. As a vegetable topping for pizza, mushrooms can be sautéed or roasted to bring out their natural flavors and add depth to a pizza."@en ;
+                 rdfs:label "Mushroom Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#NamedPizza
+:NamedPizza rdf:type owl:Class ;
+            rdfs:subClassOf ra:Pizza ;
+            rdfs:comment "The namedPizza class represents a specific type of pizza that has a unique name and recipe. Examples of named pizzas include Margherita, Pepperoni, and Hawaiian. Each named pizza has a set of ingredients that distinguishes it from other types of pizzas. This class can be used to capture the diversity of pizza offerings and enable the classification and search of pizzas based on their names and ingredients."@en ;
+            rdfs:label "Named Pizza"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#NewYork
+:NewYork rdf:type owl:Class ;
+         rdfs:subClassOf :City ;
+         rdfs:comment "New York City, also known as NYC or the Big Apple, is the largest city in the United States, located in the northeastern region of the country."@en ;
+         rdfs:label "New York" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#OnionTopping
+:OnionTopping rdf:type owl:Class ;
+              rdfs:subClassOf :VegetableTopping ;
+              rdfs:comment "Onions are a common pizza topping that add a distinct flavor and texture to the dish. They can be used raw or cooked, and are often sliced thin and scattered on top of the pizza before baking."@en ;
+              rdfs:label "Onion Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Oregano
+:Oregano rdf:type owl:Class ;
+         rdfs:subClassOf :Herbs ;
+         rdfs:comment "Oregano is a fragrant herb with a slightly bitter taste that is commonly used in Mediterranean and Italian cuisine. When added to a pizza, it can provide a subtle, earthy flavor and aroma that complements the other toppings and enhances the overall taste of the pizza."@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#ParmesanTopping
+:ParmesanTopping rdf:type owl:Class ;
+                 rdfs:subClassOf :CheeseTopping ;
+                 rdfs:comment "Parmesan topping in pizza refers to the representation of grated Parmesan cheese as a type of topping that can be added to a pizza. Parmesan cheese is a hard, aged cheese that has a nutty and salty flavor. It is commonly used as a topping for pizza to add flavor and texture."@en ;
+                 rdfs:label "Parmesan Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#PepperTopping
+:PepperTopping rdf:type owl:Class ;
+               rdfs:subClassOf :VegetableTopping ;
+               rdfs:comment "Peppers come in various colors such as green, red, and yellow, and have a slightly sweet and tangy flavor. They can be sliced thin or diced and are often used to add texture and crunch to a pizza. Peppers can be cooked or raw depending on the desired taste and texture."@en ;
+               rdfs:label "Pepper Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#PepperoniPizza
+:PepperoniPizza rdf:type owl:Class ;
+                rdfs:subClassOf :NamedPizza ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :hasTopping ;
+                                  owl:someValuesFrom :PepperoniTopping
+                                ] ;
+                rdfs:comment "This pizza must contain one pepperoni topping." ;
+                rdfs:label "Pepperoni Pizza" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#PepperoniTopping
+:PepperoniTopping rdf:type owl:Class ;
+                  rdfs:subClassOf :MeatTopping ;
+                  rdfs:comment "Pepperoni is a type of dry, cured sausage made from beef and pork, and is a common topping for pizza. It is typically thinly sliced and has a spicy flavor, making it a popular choice for those who enjoy a bit of heat on their pizza."@en ;
+                  rdfs:label "Pepperoni Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Pineapple
+:Pineapple rdf:type owl:Class ;
+           rdfs:subClassOf :FruitTopping ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty :hasTopping ;
+                             owl:someValuesFrom :Pineapple
+                           ] ;
+           rdfs:comment "Pineapple is a tropical fruit that is known for its sweet and tangy flavor, and it is often used as a topping for pizza along with savory ingredients such as ham or bacon."@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#PizzaBase
+:PizzaBase rdf:type owl:Class ;
+           rdfs:subClassOf :Ingredients ;
+           rdfs:comment "The base or crust of a pizza, which can be made of various ingredients and have different textures and flavors." ;
+           rdfs:label "Pizza Base" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#PizzaSauce
+:PizzaSauce rdf:type owl:Class ;
+            rdfs:subClassOf :Ingredients ;
+            rdfs:comment "Pizza sauce is typically made from tomatoes, garlic, and herbs such as oregano and basil, and can vary in consistency and flavor depending on the region or recipe. It is spread over the dough before adding toppings, and serves as a flavor enhancer and binding agent for the toppings."@en ;
+            rdfs:label "Pizza Sauce"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#PizzaSizes
+:PizzaSizes rdf:type owl:Class ;
+            rdfs:subClassOf [ rdf:type owl:Restriction ;
+                              owl:onProperty :hasSize ;
+                              owl:allValuesFrom :PizzaSizes
+                            ] ;
+            rdfs:comment """This describe the size options for different pizza types.The sizes of pizza available are as follows 
+-Small size
+-Medium size
+-Large size""" ;
+            rdfs:label "Pizza Sizes" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#PizzaTopping
+:PizzaTopping rdf:type owl:Class ;
+              rdfs:subClassOf :Ingredients ;
+              rdfs:comment "An ingredient added on top of a pizza"@en ;
+              rdfs:label "Pizza Topping" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#RedPepperTopping
+:RedPepperTopping rdf:type owl:Class ;
+                  rdfs:subClassOf :PepperTopping ;
+                  rdfs:comment "Red bell peppers are a sweet and colorful vegetable that are a good source of vitamins and antioxidants. When used as a pizza topping, they can add a slightly sweet and smoky flavor to the pizza, as well as a vibrant pop of color."@en ;
+                  rdfs:label "Red Pepper Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Restaurant
+:Restaurant rdf:type owl:Class ;
+            rdfs:comment "A pizza restaurant is a type of food service establishment that specializes in serving pizza to its customers. Pizza restaurants may offer a variety of pizza types, toppings, and flavors to cater to different tastes and preferences.Pizza restaurants may vary in terms of their atmosphere, service style, and pricing, ranging from casual and affordable to upscale and expensive. Some pizza restaurants offer dine-in, takeout, delivery, or a combination of these options to provide convenience to their customers."@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#RicottaTopping
+:RicottaTopping rdf:type owl:Class ;
+                rdfs:subClassOf :CheeseTopping ;
+                rdfs:comment "Ricotta topping in pizza refers to the representation of ricotta cheese as a type of topping that can be added to a pizza. Ricotta cheese is a soft, creamy cheese that is often used in Italian cuisine, and has a mild, slightly sweet flavor."@en ;
+                rdfs:label "Ricotta Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#SalamiTopping
+:SalamiTopping rdf:type owl:Class ;
+               rdfs:subClassOf :MeatTopping ;
+               rdfs:comment "Salami topping for pizza refers to the representation of salami as a type of topping that can be added to a pizza. Salami is a type of cured sausage that is typically made from beef, but can also be made from pork or a combination of both. It is sliced thin and often has a bold, spicy flavor that can add depth and richness to a pizza."@en ;
+               rdfs:label "Salami Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Small
+:Small rdf:type owl:Class ;
+       rdfs:subClassOf :PizzaSizes ;
+       rdfs:comment "Small pizza size refers to the representation of a pizza that has a smaller size compared to standard or large pizzas. The exact size of a small pizza can vary depending on the pizzeria or region, but it typically ranges from 8 to 10 inches in diameter. Small pizzas are often ideal for individuals or small groups who may not want or need a larger pizza. They can also be a more budget-friendly option, as they typically cost less than larger pizzas." .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#SpinachTopping
+:SpinachTopping rdf:type owl:Class ;
+                rdfs:subClassOf :VegetableTopping ;
+                rdfs:comment "Spinach is a leafy green vegetable that is known for its high nutritional value, particularly its high levels of vitamins and minerals. Spinach is a popular pizza topping choice as it adds a unique flavor and texture to the pizza."@en ;
+                rdfs:label "Spinach Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#ThickCrust
+:ThickCrust rdf:type owl:Class ;
+            rdfs:subClassOf :PizzaBase ;
+            rdfs:comment "Thick crust is a type of pizza crust that is characterized by its thickness and chewiness. It is typically made with a dough that has a higher ratio of flour to water and is often cooked at a lower temperature for a longer period of time than other types of crusts."@en ;
+            rdfs:label "Thick Crust"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#ThinCrust
+:ThinCrust rdf:type owl:Class ;
+           rdfs:subClassOf :PizzaBase ;
+           rdfs:comment "Thin crust is a type of pizza crust that is rolled out thinly, resulting in a crispy texture. It is a popular option for those who prefer a lighter pizza and want to focus more on the toppings than the dough."@en ;
+           rdfs:label "Thin Crust"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#TomatoSauce
+:TomatoSauce rdf:type owl:Class ;
+             rdfs:subClassOf :PizzaSauce ;
+             rdfs:comment "Tomato sauce is typically made from crushed or pureed tomatoes, and may also contain additional ingredients such as garlic, olive oil, and herbs. It is spread over the pizza dough before adding toppings and is an essential component of many pizza recipes."@en ;
+             rdfs:label "Tomato Sauce"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#TomatoTopping
+:TomatoTopping rdf:type owl:Class ;
+               rdfs:subClassOf :VegetableTopping ;
+               rdfs:comment "Tomatoes are a common ingredient in many pizza recipes, and can be used in a variety of forms such as tomato sauce, diced or sliced fresh tomatoes, or roasted tomatoes. Tomato toppings can add a sweet and tangy flavor to a pizza, and can also provide a source of vitamins and minerals."@en ;
+               rdfs:label "Tomato Topping"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#VegetableTopping
+:VegetableTopping rdf:type owl:Class ;
+                  rdfs:subClassOf :PizzaTopping ;
+                  rdfs:comment """A type of pizza topping that consists of vegetables, such as :
+onions, peppers, mushrooms, spinach, olives and tomatoes""" ;
+                  rdfs:label "Vegetable Topping" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#WhitePizza
+:WhitePizza rdf:type owl:Class ;
+            rdfs:subClassOf :NamedPizza ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :hasSauce ;
+                              owl:someValuesFrom :WhiteSauce
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :hasSauce ;
+                              owl:minQualifiedCardinality "0"^^xsd:nonNegativeInteger ;
+                              owl:onClass :TomatoSauce
+                            ] ;
+            rdfs:comment """It contains veriety of cheeses topings 
+specially Mozerella and Ricotta as common choises.
+It doesnt contain tomato sauce.""" ;
+            rdfs:label "White Pizza" .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#WhiteSauce
+:WhiteSauce rdf:type owl:Class ;
+            rdfs:subClassOf :PizzaSauce ;
+            rdfs:comment "White sauce is typically made from a combination of butter, flour, and milk, and can be seasoned with herbs and spices for additional flavor. It has a creamy, smooth texture and a mild, slightly sweet taste that pairs well with a variety of toppings, such as chicken, spinach, and mushrooms."@en ;
+            rdfs:label "White Sauce"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Aarti&RatnaPizzeria
+<ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Aarti&RatnaPizzeria> rdf:type owl:Class ;
+                                                                            rdfs:subClassOf :Restaurant ,
+                                                                                            [ rdf:type owl:Restriction ;
+                                                                                              owl:onProperty :servesPizza ;
+                                                                                              owl:someValuesFrom :MangoTangoBeachPiePizza
+                                                                                            ] ,
+                                                                                            [ rdf:type owl:Restriction ;
+                                                                                              owl:onProperty :servesPizza ;
+                                                                                              owl:someValuesFrom :MiamiSteakhousePizza
+                                                                                            ] ,
+                                                                                            [ rdf:type owl:Restriction ;
+                                                                                              owl:onProperty :isLocatedIn ;
+                                                                                              owl:allValuesFrom :Miami
+                                                                                            ] ;
+                                                                            rdfs:comment """Newly opened restaurant situated in Miami (the only branch)
+Speciality :- 
+      Mango Tango Beach Pie Pizza
+      Miami Steakhouse Pizza
+      
+\"From our kitchen to your table , the best pizza you will ever taste\""""@en ;
+                                                                            rdfs:label "Aarti & Ratna Pizzeria"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Abo'sPizza
+<ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Abo'sPizza> rdf:type owl:Class ;
+                                                                   rdfs:subClassOf :Restaurant ,
+                                                                                   [ rdf:type owl:Restriction ;
+                                                                                     owl:onProperty :isLocatedIn ;
+                                                                                     owl:someValuesFrom :Littleton
+                                                                                   ] ;
+                                                                   rdfs:comment "It is representing Abo's Pizza Restaurant, a type of restaurant that serves pizza."@en ;
+                                                                   rdfs:label "Abo's Pizza"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Burger&Cupcakes
+<ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Burger&Cupcakes> rdf:type owl:Class ;
+                                                                        rdfs:subClassOf :Restaurant ,
+                                                                                        [ rdf:type owl:Restriction ;
+                                                                                          owl:onProperty :isLocatedIn ;
+                                                                                          owl:someValuesFrom :NewYork
+                                                                                        ] ;
+                                                                        rdfs:comment "Burgers & Pancakes Pizza Palace is a restaurant that serves pizzas topped with burger and pancake ingredients, offering a unique fusion of American cuisine."@en ;
+                                                                        rdfs:label "Burger & Cupcakes"@en .
+
+
+###  ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Cristy'sPizza
+<ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Cristy'sPizza> rdf:type owl:Class ;
+                                                                      rdfs:subClassOf :Restaurant ,
+                                                                                      [ rdf:type owl:Restriction ;
+                                                                                        owl:onProperty :isLocatedIn ;
+                                                                                        owl:someValuesFrom :Baltimore
+                                                                                      ] ;
+                                                                      rdfs:comment "This class represents the concept of Cristy's Pizza restaurant in the Pizza created in Protege. Cristy's Pizza is a well-known pizza chain in Ohio, USA, offering a variety of pizza toppings and flavors. The restaurant is a key player in the pizza industry and has a loyal customer base."@en ;
+                                                                      rdfs:label "Cristy's Pizza"@en .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Baltimore
+                :Littleton
+                :Miami
+                :NewYork
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( <ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Aarti&RatnaPizzeria>
+                <ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Abo'sPizza>
+                <ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Burger&Cupcakes>
+                <ohttp://www.city.ac.uk/inm713-in3067/2023/Ratna&Aarti#Cristy'sPizza>
+              )
+] .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
